@@ -1,0 +1,94 @@
+# OBPL Language Syntax (EBNF)
+
+# Basic structure
+program        ::= (statement | declaration)*
+
+# Declarations
+declaration   ::= varDecl | funcDecl | classDecl | moduleDecl | structDecl
+
+# Variables
+varDecl       ::= ("var" | "const") IDENTIFIER ":" type ("=" expression)? ";"
+type          ::= basicType | arrayType | functionType | userType
+basicType     ::= "int" | "float" | "string" | "bool" | "byte"
+arrayType     ::= type "[]"
+functionType  ::= "func" "(" paramList ")" "->" type
+
+# Functions
+funcDecl      ::= "func" IDENTIFIER "(" paramList ")" ("->" type)? block
+paramList     ::= (param ("," param)*)?
+param         ::= IDENTIFIER ":" type
+
+# Classes
+classDecl     ::= "class" IDENTIFIER ("<" typeParams ">")? "{" classBody "}"
+classBody     ::= (method | field)*
+method        ::= ("public" | "private")? funcDecl
+field         ::= ("public" | "private")? varDecl
+
+# Modules
+moduleDecl    ::= "module" IDENTIFIER "{" declaration* "}"
+
+# Structures
+structDecl    ::= "struct" IDENTIFIER "{" structField* "}"
+structField   ::= IDENTIFIER ":" type ";"
+
+# System Calls
+syscall       ::= "syscall" IDENTIFIER "(" argList ")" "->" type
+
+# Statements
+statement    ::= exprStmt | ifStmt | whileStmt | forStmt | returnStmt | tryStmt
+exprStmt     ::= expression ";"
+ifStmt       ::= "if" "(" expression ")" block ("else" block)?
+whileStmt    ::= "while" "(" expression ")" block
+forStmt      ::= "for" "(" varDecl? ";" expression? ";" expression? ")" block
+returnStmt   ::= "return" expression? ";"
+tryStmt      ::= "try" block "catch" "(" IDENTIFIER ":" type ")" block
+
+# Expressions
+expression   ::= assignment
+assignment   ::= IDENTIFIER "=" expression
+               | logicOr
+logicOr      ::= logicAnd ("||" logicAnd)*
+logicAnd     ::= equality ("&&" equality)*
+equality     ::= comparison (("!=" | "==") comparison)*
+comparison   ::= term ((">" | ">=" | "<" | "<=") term)*
+term         ::= factor (("+" | "-") factor)*
+factor       ::= unary (("*" | "/" | "%") unary)*
+unary        ::= ("!" | "-") unary | primary
+primary      ::= NUMBER | STRING | "true" | "false" | "null"
+               | IDENTIFIER | "(" expression ")"
+               | "[" arguments? "]"
+               | "new" IDENTIFIER "(" arguments? ")"
+
+# Example OBPL code:
+module System {
+    struct Process {
+        pid: int;
+        name: string;
+        status: ProcessStatus;
+    }
+
+    enum ProcessStatus {
+        RUNNING,
+        STOPPED,
+        WAITING
+    }
+
+    func getProcess(pid: int) -> Process {
+        unsafe {
+            syscall get_process(pid) -> Process
+        }
+    }
+
+    class ProcessManager {
+        private var processes: Process[];
+
+        public func startProcess(name: string) -> int {
+            var pid = syscall create_process(name);
+            if pid > 0 {
+                var proc = getProcess(pid);
+                processes.append(proc);
+            }
+            return pid;
+        }
+    }
+}

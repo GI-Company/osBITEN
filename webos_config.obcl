@@ -1,0 +1,62 @@
+# WebOS Platform Configuration
+platform:
+    type: "webos"
+    version: "7.0.0"
+    features:
+        - "luna-service"
+        - "web-runtime"
+        - "system-ui"
+    
+    services:
+        - name: "com.obpi.core"
+          type: "native"
+          permissions: ["all"]
+        - name: "com.obpi.display"
+          type: "native"
+          permissions: ["display"]
+        - name: "com.obpi.network"
+          type: "native"
+          permissions: ["network"]
+
+# VM Configuration for WebOS
+vm:
+    instances:
+        max: 4
+        default_memory: "256MB"
+        default_cores: 2
+    
+    graphics:
+        acceleration: "hardware"
+        compositing: "native"
+        surface_format: "RGBA8888"
+
+# Resource Management
+resources:
+    scheduling:
+        policy: "webos-priority"
+        time_slice: "10ms"
+    
+    memory:
+        type: "dynamic"
+        swap: "file"
+        min_guarantee: "128MB"
+
+# WebOS Integration
+webos:
+    app_id: "com.obpi.system"
+    vendor: "GI-Company"
+    version: "2.0.0"
+    
+    window:
+        type: "card"
+        title: "OBPI System"
+        subtitle: "Virtual Machine Manager"
+        icon: "images/icon.png"
+    
+    luna_bus:
+        name: "com.obpi.core"
+        type: "regular"
+        permissions:
+            - "activity.operation"
+            - "applicationmanager.launch"
+            - "systemservice.query"

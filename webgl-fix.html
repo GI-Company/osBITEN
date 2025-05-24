@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebGL Fix for OBPI</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #444;
+      margin-top: 20px;
+    }
+    pre {
+      background-color: #f8f8f8;
+      padding: 10px;
+      border-radius: 3px;
+      overflow-x: auto;
+    }
+    code {
+      font-family: monospace;
+    }
+    .issue {
+      background-color: #fff8f8;
+      border-left: 4px solid #ff6b6b;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .solution {
+      background-color: #f8fff8;
+      border-left: 4px solid #6bff6b;
+      padding: 10px;
+      margin: 10px 0;
+    }
+    .steps {
+      list-style-type: decimal;
+      padding-left: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WebGL Fix for OBPI</h1>
+
+    <h2>Issue Description</h2>
+    <div class="issue">
+      <p>The UI isn't populating correctly due to an issue with the WebGL initialization in the <code>initWebGLBackground()</code> function. The variables <code>scene</code>, <code>camera</code>, <code>renderer</code>, and <code>stars</code> are not properly declared with <code>let</code>, <code>const</code>, or <code>var</code>, which means they're being created as global variables. This could lead to issues if these variables are not properly initialized or if there are conflicts with other global variables.</p>
+    </div>
+
+    <h2>Original Code</h2>
+    <pre><code>// --- WebGL Background ---
+function initWebGLBackground() {
+  try {
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('webgl-canvas'),
+      antialias: true,
+      alpha: true
+    });
+    // ... rest of the function
+  } catch (e) {
+    OBPI.kernel.log(`WebGL initialization failed: ${e.message}`, "error");
+    OBPI.desktopElement.style.backgroundColor = OBPI.config.bgColor || '#1a1a2e';
+  }
+}</code></pre>
+
+    <h2>Solution</h2>
+    <div class="solution">
+      <p>The solution is to properly declare the variables with <code>let</code> to avoid global scope issues, and to store references to WebGL objects in the OBPI object to avoid global variables.</p>
+    </div>
+
+    <h2>Fixed Code</h2>
+    <pre><code>// --- WebGL Background ---
+function initWebGLBackground() {
+  try {
+    // Properly declare variables with let to avoid global scope issues
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 2000);
+    let renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('webgl-canvas'),
+      antialias: true,
+      alpha: true
+    });
+
+    // ... rest of the function
+
+    // Store references in OBPI object to avoid global variables
+    OBPI.webGL = {
+      scene: scene,
+      camera: camera,
+      renderer: renderer,
+      stars: stars
+    };
+
+    // ... rest of the function
+  } catch (e) {
+    console.error(`WebGL initialization failed: ${e.message}`);
+    if (OBPI.kernel && OBPI.kernel.log) {
+      OBPI.kernel.log(`WebGL initialization failed: ${e.message}`, "error");
+    }
+    if (OBPI.desktopElement) {
+      OBPI.desktopElement.style.backgroundColor = OBPI.config.bgColor || '#1a1a2e';
+    }
+  }
+}</code></pre>
+
+    <h2>Implementation Steps</h2>
+    <ol class="steps">
+      <li>Create a new JavaScript file <code>/Volumes/linux/BITEN/js/webgl-init-fixed.js</code> with the fixed WebGL initialization code.</li>
+      <li>The file includes code to:
+        <ul>
+          <li>Store the original <code>initWebGLBackground</code> function if it exists</li>
+          <li>Define a fixed version of the function that properly declares variables with <code>let</code></li>
+          <li>Store references to WebGL objects in the OBPI object to avoid global variables</li>
+          <li>Override the global <code>initWebGLBackground</code> function with the fixed version</li>
+          <li>Automatically call the fixed function when the document is loaded</li>
+        </ul>
+      </li>
+      <li>Include the fixed script in the HTML file by adding a script tag after the Three.js script tag.</li>
+    </ol>
+
+    <h2>Additional Notes</h2>
+    <p>The HTML file has an extra closing script tag at line 339 that could be causing issues. This should be removed if possible.</p>
+
+    <p>If you're unable to modify the HTML file directly, you can use the <code>webgl-init-fixed.js</code> script which will automatically override the <code>initWebGLBackground</code> function and call it when the document is loaded.</p>
+  </div>
+</body>
+</html>

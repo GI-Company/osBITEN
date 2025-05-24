@@ -1,0 +1,110 @@
+/* OBPI Desktop Styling */
+:root {
+    --obpi-primary: #2c3e50;
+    --obpi-secondary: #34495e;
+    --obpi-accent: #3498db;
+    --obpi-text: #ecf0f1;
+    --obpi-warning: #e74c3c;
+    --obpi-success: #2ecc71;
+}
+
+/* System-wide Animations */
+@keyframes bootFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes progressPulse {
+    0% { transform: scaleX(0); }
+    100% { transform: scaleX(1); }
+}
+
+/* Boot Screen */
+.boot-screen {
+    background: var(--obpi-primary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: bootFade 1s ease-in-out;
+}
+
+.boot-progress {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--obpi-accent);
+    animation: progressPulse 2s infinite;
+    transform-origin: left;
+}
+
+/* Desktop Environment */
+.desktop {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+    background: var(--obpi-secondary);
+}
+
+.top-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--obpi-primary);
+    padding: 4px 8px;
+    height: 32px;
+}
+
+/* Terminal Styling */
+.terminal-window {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.85);
+    border: 1px solid var(--obpi-accent);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.terminal-content {
+    padding: 8px;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--obpi-text);
+}
+
+/* Window Management */
+.window {
+    position: absolute;
+    background: var(--obpi-secondary);
+    border: 1px solid var(--obpi-accent);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.window.maximized {
+    width: 100% !important;
+    height: 100% !important;
+    top: 0 !important;
+    left: 0 !important;
+}
+
+/* System Notifications */
+.notification {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px;
+    background: var(--obpi-primary);
+    border-left: 4px solid var(--obpi-accent);
+    border-radius: 4px;
+    color: var(--obpi-text);
+    animation: notificationSlide 0.3s ease-out;
+}
