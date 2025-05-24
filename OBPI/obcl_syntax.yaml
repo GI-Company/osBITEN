@@ -1,0 +1,97 @@
+# OBCL Syntax Definition
+
+# System Configuration
+system:
+    name: string
+    version: semver
+    mode: ['development' | 'production' | 'debug']
+    security:
+        level: ['standard' | 'high' | 'paranoid']
+        features: [string]
+    
+# Resource Management
+resources:
+    memory:
+        total: size
+        reserved: size
+        gc:
+            strategy: ['generational' | 'mark-sweep' | 'real-time']
+            threshold: percentage
+    storage:
+        type: ['pepx' | 'memory' | 'hybrid']
+        encryption: boolean
+        compression: ['none' | 'lz4' | 'zstd']
+
+# Network Configuration
+network:
+    interfaces: [interface]
+    firewall:
+        rules: [rule]
+        default: ['allow' | 'deny']
+
+# Security Policies
+security:
+    users: [user]
+    roles: [role]
+    permissions: [permission]
+
+# Example OBCL configuration:
+---
+system:
+    name: "OBPI-System"
+    version: "2.0.0"
+    mode: "production"
+    security:
+        level: "high"
+        features:
+            - "secure-boot"
+            - "memory-encryption"
+            - "process-isolation"
+
+resources:
+    memory:
+        total: "4GB"
+        reserved: "512MB"
+        gc:
+            strategy: "generational"
+            threshold: 75
+    storage:
+        type: "pepx"
+        encryption: true
+        compression: "zstd"
+
+network:
+    interfaces:
+        - name: "eth0"
+          type: "ethernet"
+          security:
+            encryption: "WPA3"
+            firewall: true
+    firewall:
+        rules:
+            - {port: 80, action: "allow", service: "http"}
+            - {port: 443, action: "allow", service: "https"}
+        default: "deny"
+
+security:
+    users:
+        - name: "admin"
+          role: "system-admin"
+          permissions: ["all"]
+        - name: "service"
+          role: "service-account"
+          permissions: ["service-ops"]
+    
+    roles:
+        - name: "system-admin"
+          level: 0
+          capabilities: ["system", "security", "network"]
+        - name: "service-account"
+          level: 1
+          capabilities: ["service"]
+
+    permissions:
+        - name: "all"
+          access: "*"
+        - name: "service-ops"
+          access: ["service.*", "network.basic"]

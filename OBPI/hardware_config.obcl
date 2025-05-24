@@ -1,0 +1,70 @@
+# Hardware Management Configuration
+hardware:
+    cpu:
+        governor: "ondemand"
+        thermal_limit: 85
+        frequency_scaling:
+            enabled: true
+            min_freq: "800MHz"
+            max_freq: "3.2GHz"
+    
+    storage:
+        persistence:
+            journal_path: "/var/obpi/journal"
+            checkpoint_interval: 60
+            sync_mode: "ordered"
+        
+        external:
+            usb_storage: true
+            sd_card: true
+            auto_mount: true
+    
+    peripherals:
+        bluetooth:
+            enabled: true
+            discoverable: true
+            profiles: ["HID", "A2DP", "AVRCP"]
+        
+        usb:
+            enabled: true
+            classes: ["HID", "MassStorage", "Audio"]
+        
+        input:
+            keyboard_layout: "auto"
+            mouse_acceleration: true
+    
+# Network Configuration
+network:
+    wifi:
+        enabled: true
+        power_save: true
+        scan_interval: 30
+        
+    ethernet:
+        enabled: true
+        auto_negotiate: true
+        wake_on_lan: true
+    
+    proxy:
+        chain_length: 3
+        rotation_interval: 300
+        verify_nodes: true
+
+# Secure Browser Configuration
+browser:
+    engine: "webkit"
+    security:
+        ssl_verify: true
+        dns_over_https: true
+        fingerprint_protection: true
+    
+    search:
+        engine: "obpi_search"
+        distributed: true
+        providers: ["brave", "ddg", "qwant"]
+        merge_results: true
+    
+    privacy:
+        tracker_blocking: true
+        script_control: "selective"
+        cookie_policy: "strict"

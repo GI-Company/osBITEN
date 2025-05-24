@@ -1,0 +1,315 @@
+:root {
+  --bg-color: #1a1a2e;
+  --window-bg: rgba(245, 245, 245, 0.97);
+  --window-border: #909090;
+  --window-header-bg: #2c2f3b;
+  --text-color-dark: #1f2937;
+  --text-color-light: #e5e7eb;
+  --accent-color: #6366f1;
+  --accent-color-darker: #4f46e5;
+  --taskbar-bg: rgba(25, 28, 38, 0.98);
+  --font-main: 'Inter', sans-serif;
+  --font-mono: 'Roboto Mono', monospace;
+  --pepx-primary-color: #3498db;
+  --pepx-secondary-color: #2980b9;
+  --pepx-bg-color: #f5f5f5;
+  --pepx-light-bg: #ffffff;
+  --pepx-text-color: #333;
+  --pepx-border-color: #ddd;
+}
+
+body.light-theme {
+  --bg-color: #e0e0e0;
+  --window-bg: rgba(255, 255, 255, 0.98);
+  --window-border: #c0c0c0;
+  --window-header-bg: #52525b;
+  --text-color-dark: #18181b;
+  --text-color-light: #f8fafc;
+  --taskbar-bg: rgba(200, 200, 210, 0.98);
+  --pepx-primary-color: #3498db;
+  --pepx-secondary-color: #2980b9;
+  --pepx-bg-color: #f0f0f0;
+  --pepx-light-bg: #ffffff;
+  --pepx-text-color: #333;
+  --pepx-border-color: #ccc;
+}
+
+body.light-theme #desktop { background-color: var(--bg-color); }
+body.light-theme .taskbar { background-color: var(--taskbar-bg); border-top: 1px solid #a0a0b0; }
+body.light-theme .taskbar-button { background-color: rgba(0,0,0,0.1); color: var(--text-color-dark); }
+body.light-theme .taskbar-button:hover { background-color: rgba(0,0,0,0.2); }
+body.light-theme .os-window { background-color: var(--window-bg); border-color: var(--window-border); color: var(--text-color-dark); }
+body.light-theme .window-header { background-color: var(--window-header-bg); color: var(--text-color-light); }
+body.light-theme .window-content { background-color: #ffffff; color: var(--text-color-dark); }
+body.light-theme #window-terminal .window-content { background-color: #f0f0f0; color: #121212; }
+body.light-theme #terminal-prompt { color: #2563eb; }
+body.light-theme #terminal-input { color: #121212; caret-color: #121212; }
+body.light-theme #pyscript-output-area,
+body.light-theme #pyide-output-area { background-color: #f9f9f9; color: #333; border-color: #ddd; }
+body.light-theme #pyscript-code-area,
+body.light-theme #pyide-code-area { background-color: #fff; color: #333; border-color: #ccc; }
+body.light-theme #window-ai-assistant .window-content { background-color: #e5e7eb; color: #1f2937; }
+body.light-theme .ai-message.user { background-color: var(--accent-color); }
+body.light-theme .ai-message.assistant { background-color: #d1d5db; }
+body.light-theme .desktop-icon span { color: var(--text-color-dark); text-shadow: 1px 1px 1px #fff; }
+body.light-theme #window-pepx-explorer .window-content { background-color: var(--pepx-bg-color); color: var(--pepx-text-color); }
+body.light-theme #window-pepx-explorer .pepx-toolbar { background-color: #e8e8e8; border-bottom-color: var(--pepx-border-color); }
+body.light-theme #window-pepx-explorer .pepx-toolbar button { background-color: var(--pepx-primary-color); }
+body.light-theme #window-pepx-explorer .pepx-toolbar button:hover { background-color: var(--pepx-secondary-color); }
+body.light-theme #window-pepx-explorer .pepx-item:hover { background-color: rgba(0,0,0,0.03); }
+body.light-theme #window-pepx-explorer .pepx-status-bar { background-color: #e8e8e8; border-top-color: var(--pepx-border-color); color: #444; }
+
+body {
+  font-family: var(--font-main);
+  overflow: hidden;
+  background-color: var(--bg-color);
+  color: var(--text-color-light);
+}
+
+.cli-font { font-family: var(--font-mono); }
+
+.os-window {
+  min-width: 320px;
+  min-height: 220px;
+  background-color: var(--window-bg);
+  border: 1px solid var(--window-border);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  overflow: hidden;
+  resize: both;
+}
+
+.os-window.active-window {
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+}
+
+.window-header {
+  background-color: var(--window-header-bg);
+  color: var(--text-color-light);
+  padding: 10px 15px;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 9px;
+  border-top-right-radius: 9px;
+  user-select: none;
+}
+
+.window-title { font-weight: 600; font-size: 0.95rem; }
+
+.window-controls button {
+  background: none;
+  border: none;
+  color: var(--text-color-light);
+  font-size: 1.2rem;
+  padding: 2px 5px;
+  margin-left: 7px;
+  cursor: pointer;
+  border-radius: 4px;
+  line-height: 1;
+}
+
+.window-controls button:hover { background-color: rgba(255,255,255,0.15); }
+
+.window-content {
+  flex-grow: 1;
+  padding: 0;
+  overflow: auto;
+  background-color: var(--window-bg);
+  color: var(--text-color-dark);
+}
+
+.window-content iframe { width: 100%; height: 100%; border: none; }
+
+#desktop {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap:10px;
+}
+
+.desktop-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  user-select:none;
+}
+
+.desktop-icon:hover { background-color: rgba(255,255,255,0.1); }
+
+.desktop-icon img, .desktop-icon .icon-placeholder {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 5px;
+  object-fit: contain;
+}
+
+.desktop-icon .icon-placeholder {
+  font-size: 32px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background-color: rgba(255,255,255,0.05);
+  border-radius:4px;
+}
+
+.desktop-icon span {
+  font-size: 0.75rem;
+  color: var(--text-color-light);
+  word-break: break-word;
+  line-height: 1.2;
+  max-height: 2.4em;
+  overflow:hidden;
+}
+
+#webgl-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -10;
+}
+
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: var(--taskbar-bg);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  z-index: 10000;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.taskbar-button {
+  background-color: rgba(255,255,255,0.1);
+  color: var(--text-color-light);
+  padding: 7px 14px;
+  margin-right: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+
+.taskbar-button:hover {
+  background-color: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.3);
+}
+
+#start-menu {
+  position: fixed;
+  bottom: 50px;
+  left: 0;
+  background-color: var(--taskbar-bg);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-bottom:none;
+  border-top-right-radius: 8px;
+  padding: 10px;
+  z-index: 9999;
+  min-width: 250px;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+}
+
+.start-menu-item {
+  display: block;
+  padding: 8px 12px;
+  color: var(--text-color-light);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size:0.9rem;
+}
+
+.start-menu-item:hover { background-color: var(--accent-color); }
+
+.context-menu {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  border-radius: 6px;
+  padding: 8px 0;
+  z-index: 20000;
+  min-width: 180px;
+}
+
+.context-menu-item {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.context-menu-item:hover { background-color: #f0f0f0; }
+
+#window-terminal .window-content {
+  background-color: #121212;
+  color: #e0e0e0;
+  padding: 12px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+#terminal-output {
+  white-space: pre-wrap;
+  word-break: break-all;
+  flex-grow: 1;
+}
+
+#terminal-input-line {
+  display: flex;
+  align-items: center;
+  padding-top: 6px;
+}
+
+#terminal-prompt { color: #00aaff; margin-right: 8px; }
+
+#terminal-input {
+  background-color: transparent;
+  border: none;
+  color: #f0f0f0;
+  outline: none;
+  flex-grow: 1;
+  caret-color: #f0f0f0;
+}
+
+.fullscreen-lock-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.3);
+  z-index: 9999;
+  display: none;
+}
+
+body:fullscreen #fullscreen-lock-overlay,
+body:-webkit-full-screen #fullscreen-lock-overlay {
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBPI Advanced Desktop Environment</title>
+    <link rel="stylesheet" href="css/obpi-core.css">
+    <link rel="stylesheet" href="css/obpi-desktop.css">
+    <link rel="stylesheet" href="css/obpi-animations.css">
+    <link rel="stylesheet" href="css/obpi-terminal.css">
+    <link rel="stylesheet" href="css/obpi-windows.css">
+    <link rel="stylesheet" href="css/obpi-widgets.css">
+    <link rel="stylesheet" href="css/obpi-notifications.css">
+    <link rel="stylesheet" href="css/obpi-context-menus.css">
+    <link rel="stylesheet" href="css/obpi-themes/default.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&display=swap">
+</head>
+<body class="obpi-system loading" data-theme="default">
+    <!-- Boot Sequence Container -->
+    <div id="boot-sequence" class="fullscreen">
+        <div class="boot-animation">
+            <div class="boot-logo">
+                <svg class="obpi-logo" width="120" height="120" viewBox="0 0 120 120">
+                    <!-- OBPI Logo SVG path here -->
+                </svg>
+            </div>
+            <div class="boot-progress-container">
+                <div class="boot-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <div class="progress-stages">
+                        <div class="stage" data-stage="bios">BIOS</div>
+                        <div class="stage" data-stage="bootloader">BOOT</div>
+                        <div class="stage" data-stage="kernel">KERNEL</div>
+                        <div class="stage" data-stage="system">SYSTEM</div>
+                    </div>
+                </div>
+                <div class="boot-status">
+                    <span class="status-text">Initializing OBPI System...</span>
+                    <span class="status-details"></span>
+                </div>
+            </div>
+        </div>
+        <div class="boot-error hidden">
+            <div class="error-icon">⚠</div>
+            <div class="error-message"></div>
+            <div class="error-details"></div>
+            <button class="error-recovery">Attempt Recovery</button>
+        </div>
+    </div>
+
+    <!-- Desktop Environment -->
+    <div id="desktop-environment" class="fullscreen hidden">
+        <!-- Top Panel / Status Bar -->
+        <div class="top-panel">
+            <div class="panel-left">
+                <button id="start-menu-trigger" class="panel-item">
+                    <svg class="obpi-icon" viewBox="0 0 24 24">
+                        <!-- Menu icon SVG -->
+                    </svg>
+                    <span>OBPI</span>
+                </button>
+                <div class="quick-launch">
+                    <button class="quick-launch-item" data-app="terminal">
+                        <svg class="app-icon" viewBox="0 0 24 24">
+                            <!-- Terminal icon SVG -->
+                        </svg>
+                    </button>
+                    <button class="quick-launch-item" data-app="files">
+                        <svg class="app-icon" viewBox="0 0 24 24">
+                            <!-- Files icon SVG -->
+                        </svg>
+                    </button>
+                    <button class="quick-launch-item" data-app="browser">
+                        <svg class="app-icon" viewBox="0 0 24 24">
+                            <!-- Browser icon SVG -->
+                        </svg>
+                    </button>
+                </div>
+                <div class="workspace-switcher">
+                    <div class="workspace active" data-workspace="1"></div>
+                    <div class="workspace" data-workspace="2"></div>
+                    <div class="workspace" data-workspace="3"></div>
+                    <div class="workspace" data-workspace="4"></div>
+                </div>
+            </div>
+            <div class="panel-center">
+                <div class="active-window-title"></div>
+            </div>
+            <div class="panel-right">
+                <div class="system-tray">
+                    <div class="tray-item" id="network-status">
+                        <svg class="tray-icon" viewBox="0 0 24 24">
+                            <!-- Network icon SVG -->
+                        </svg>
+                    </div>
+                    <div class="tray-item" id="battery-status">
+                        <svg class="tray-icon" viewBox="0 0 24 24">
+                            <!-- Battery icon SVG -->
+                        </svg>
+                    </div>
+                    <div class="tray-item" id="volume-control">
+                        <svg class="tray-icon" viewBox="0 0 24 24">
+                            <!-- Volume icon SVG -->
+                        </svg>
+                    </div>
+                    <div class="tray-item" id="notifications-center">
+                        <svg class="tray-icon" viewBox="0 0 24 24">
+                            <!-- Notifications icon SVG -->
+                        </svg>
+                        <div class="notification-badge hidden">0</div>
+                    </div>
+                    <div class="tray-item" id="system-clock">
+                        <time datetime="2025-05-22T01:28:33Z">01:28</time>
+                    </div>
+                    <div class="tray-item" id="user-menu">
+                        <img class="user-avatar" src="avatar.png" alt="GI-Company">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Desktop Area -->
+        <div class="desktop-area">
+            <!-- Desktop Grid -->
+            <div class="desktop-grid">
+                <div class="desktop-icons">
+                    <!-- Desktop icons will be dynamically populated -->
+                </div>
+            </div>
+
+            <!-- Window Management Area -->
+            <div class="window-management-area">
+                <!-- Windows will be dynamically created here -->
+            </div>
+
+            <!-- Desktop Widgets -->
+            <div class="desktop-widgets">
+                <div class="widget" data-widget="system-monitor">
+                    <div class="widget-header">
+                        <span class="widget-title">System Monitor</span>
+                        <div class="widget-controls">
+                            <button class="widget-refresh">⟳</button>
+                            <button class="widget-close">×</button>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="system-stats">
+                            <div class="stat-item">
+                                <span class="stat-label">CPU</span>
+                                <div class="stat-value">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="value">0%</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-label">Memory</span>
+                                <div class="stat-value">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="value">0/0 GB</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Menu -->
+        <div id="start-menu" class="system-menu hidden">
+            <div class="menu-search">
+                <input type="text" placeholder="Search apps and files...">
+            </div>
+            <div class="menu-sections">
+                <div class="menu-section" data-section="pinned">
+                    <h3>Pinned</h3>
+                    <div class="menu-grid">
+                        <!-- Pinned apps -->
+                    </div>
+                </div>
+                <div class="menu-section" data-section="recent">
+                    <h3>Recent</h3>
+                    <div class="menu-list">
+                        <!-- Recent items -->
+                    </div>
+                </div>
+            </div>
+            <div class="menu-footer">
+                <button class="menu-item" data-action="settings">
+                    <svg class="menu-icon" viewBox="0 0 24 24">
+                        <!-- Settings icon SVG -->
+                    </svg>
+                    <span>Settings</span>
+                </button>
+                <button class="menu-item" data-action="power">
+                    <svg class="menu-icon" viewBox="0 0 24 24">
+                        <!-- Power icon SVG -->
+                    </svg>
+                    <span>Power</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Context Menus -->
+        <div class="context-menu hidden" id="desktop-context-menu">
+            <!-- Desktop context menu items -->
+        </div>
+        <div class="context-menu hidden" id="window-context-menu">
+            <!-- Window context menu items -->
+        </div>
+        <div class="context-menu hidden" id="tray-context-menu">
+            <!-- System tray context menu items -->
+        </div>
+
+        <!-- Notification Center -->
+        <div id="notification-center" class="system-panel hidden">
+            <div class="panel-header">
+                <h2>Notifications</h2>
+                <button class="clear-all">Clear All</button>
+            </div>
+            <div class="notifications-container">
+                <!-- Notifications will be dynamically added here -->
+            </div>
+        </div>
+
+        <!-- Quick Settings Panel -->
+        <div id="quick-settings" class="system-panel hidden">
+            <div class="panel-header">
+                <h2>Quick Settings</h2>
+            </div>
+            <div class="settings-grid">
+                <button class="setting-tile" data-setting="wifi">
+                    <svg class="setting-icon" viewBox="0 0 24 24">
+                        <!-- WiFi icon SVG -->
+                    </svg>
+                    <span>Wi-Fi</span>
+                </button>
+                <!-- More setting tiles -->
+            </div>
+        </div>
+
+        <!-- Terminal Window Template -->
+        <template id="terminal-window">
+            <div class="window terminal-window" data-app="terminal">
+                <div class="window-header">
+                    <div class="window-title">
+                        <svg class="window-icon" viewBox="0 0 24 24">
+                            <!-- Terminal icon SVG -->
+                        </svg>
+                        <span>Terminal</span>
+                    </div>
+                    <div class="window-controls">
+                        <button class="window-control" data-action="minimize">−</button>
+                        <button class="window-control" data-action="maximize">□</button>
+                        <button class="window-control" data-action="close">×</button>
+                    </div>
+                </div>
+                <div class="window-content">
+                    <div class="terminal-container">
+                        <div class="terminal-output"></div>
+                        <div class="terminal-input-line">
+                            <span class="prompt">➜</span>
+                            <input type="text" class="terminal-input" autofocus>
+                        </div>
+                    </div>
+                </div>
+                <div class="window-statusbar">
+                    <span class="status-item">bash</span>
+                    <span class="status-item">utf-8</span>
+                    <span class="status-item">100%</span>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- System Scripts -->
+    <script src="js/obpi-core/kernel.js"></script>
+    <script src="js/obpi-core/bootloader.js"></script>
+    <script src="js/obpi-core/process-manager.js"></script>
+    <script src="js/obpi-core/resource-manager.js"></script>
+    <script src="js/obpi-core/window-manager.js"></script>
+    <script src="js/obpi-core/notification-manager.js"></script>
+    <script src="js/obpi-desktop/desktop.js"></script>
+    <script src="js/obpi-desktop/panels.js"></script>
+    <script src="js/obpi-desktop/menus.js"></script>
+    <script src="js/obpi-desktop/widgets.js"></script>
+    <script src="js/obpi-apps/terminal.js"></script>
+    <script src="js/obpi-apps/file-manager.js"></script>
+    <script src="js/obpi-apps/browser.js"></script>
+    <script src="js/obpi-system/settings.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const bootloader = new OBPIBootloader();
+                await bootloader.start();
+            } catch (error) {
+                console.error('System initialization failed:', error);
+                document.body.classList.add('boot-error');
+            }
+        });
+    </script>
+</body>
+</html>

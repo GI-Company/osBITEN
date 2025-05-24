@@ -1,0 +1,17 @@
+include README.md
+include LICENSE.txt
+include requirements.txt
+include *.spec
+include *.bat
+include *.sh
+include favicon.ico
+include icon.png
+include icon.svg
+include site.webmanifest
+include robots.txt
+include 404.html
+recursive-include src *
+recursive-include css *
+recursive-include js *
+recursive-include img *
+recursive-include backend *.py
